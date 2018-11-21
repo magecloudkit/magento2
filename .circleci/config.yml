@@ -42,8 +42,8 @@ jobs:
           docker info
           git rev-parse HEAD > magento/REVISION.txt
           docker info
-          docker build --rm=false -t magecloudkit/magento2:${BUILD_NUM} ./magento
-          docker build --rm=false -t magecloudkit/nginx:${BUILD_NUM} ./docker/nginx
+          docker build --rm=false -t magecloudkit/magento2:${CIRCLE_BUILD_NUM} ./magento
+          docker build --rm=false -t magecloudkit/nginx:${CIRCLE_BUILD_NUM} ./docker/nginx
 
       # install aws cli tools
       - run: |
@@ -55,7 +55,7 @@ jobs:
       # push image
       #- run: |
       #    aws ecr get-login --no-include-email --region us-east-1 | sh
-      #    docker tag magecloudkit/magento2:${BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/magento2:${BUILD_NUM}
-      #    docker push ${AWS_ECR_URL}/magecloudkit/magento2:${BUILD_NUM}
-      #    docker tag magecloudkit/nginx:${BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/nginx:${BUILD_NUM}
-      #    docker push ${AWS_ECR_URL}/magecloudkit/nginx:${BUILD_NUM}
+      #    docker tag magecloudkit/magento2:${CIRCLE_BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/magento2:${CIRCLE_BUILD_NUM}
+      #    docker push ${AWS_ECR_URL}/magecloudkit/magento2:${CIRCLE_BUILD_NUM}
+      #    docker tag magecloudkit/nginx:${CIRCLE_BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/nginx:${CIRCLE_BUILD_NUM}
+      #    docker push ${AWS_ECR_URL}/magecloudkit/nginx:${CIRCLE_BUILD_NUM}
