@@ -2,18 +2,17 @@
 
 Magento 2 Docker Image for MageCloudKit.
 
-## Building the Docker images locally
+## Building the Docker image locally
 
     $ docker build --rm=false -t magecloudkit/magento2:latest magento
-    $ docker build --rm=false -t magecloudkit/nginx:latest ./docker/nginx
 
-## Building the Docker images on CircleCI
+## Building the Docker image on CircleCI
 
-This repository includes a sample configuration file for building MageCloudKit Docker images using
-[CircleCI](https://circleci.com).
+This repository includes a sample configuration file for building the MageCloudKit Magento 2
+Docker image using [CircleCI](https://circleci.com).
 
-As the database is not available on CircleCI, we need to need to include a Magento configuration file
-(`magento/app/etc/config.php`). This allows the Magento to correctly discovered the enabled modules and
+As we do not have access to the database on CircleCI, we need to need to include a Magento configuration file
+(`app/etc/config.php`). This allows the Magento to correctly discovered the enabled modules and
 build the static assets accordingly.
 
 ### Configuring CircleCI

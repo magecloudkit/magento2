@@ -14,7 +14,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "magento/composer.json" }}
+          - v1-dependencies-{{ checksum "composer.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
@@ -22,17 +22,17 @@ jobs:
       - run: |
           curl -sS https://getcomposer.org/installer | php
           php composer.phar global config http-basic.repo.magento.com $MAGENTO_PUBLIC_KEY $MAGENTO_PRIVATE_KEY
-          php composer.phar install --working-dir magento --ignore-platform-reqs
+          php composer.phar install --ignore-platform-reqs
 
       - save_cache:
           paths:
-            - ./magento/vendor
-          key: v1-dependencies-{{ checksum "magento/composer.json" }}
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
 
       # compile code and generate static view files
       - run: |
-          php magento/bin/magento setup:di:compile
-          php magento/bin/magento setup:static-content:deploy -f
+          php bin/magento setup:di:compile
+          php bin/magento setup:static-content:deploy -f
 
       # run any unit tests here if you desire
       #- run: phpunit
@@ -40,10 +40,9 @@ jobs:
       # build docker images
       - run: |
           docker info
-          git rev-parse HEAD > magento/REVISION.txt
+          git rev-parse HEAD > REVISION.txt
           docker info
-          docker build --rm=false -t magecloudkit/magento2:${CIRCLE_BUILD_NUM} ./magento
-          docker build --rm=false -t magecloudkit/nginx:${CIRCLE_BUILD_NUM} ./docker/nginx
+          docker build --rm=false -t magecloudkit/magento2:${CIRCLE_BUILD_NUM} .
 
       # install aws cli tools
       - run: |
@@ -57,5 +56,3 @@ jobs:
       #    aws ecr get-login --no-include-email --region us-east-1 | sh
       #    docker tag magecloudkit/magento2:${CIRCLE_BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/magento2:${CIRCLE_BUILD_NUM}
       #    docker push ${AWS_ECR_URL}/magecloudkit/magento2:${CIRCLE_BUILD_NUM}
-      #    docker tag magecloudkit/nginx:${CIRCLE_BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/nginx:${CIRCLE_BUILD_NUM}
-      #    docker push ${AWS_ECR_URL}/magecloudkit/nginx:${CIRCLE_BUILD_NUM}
