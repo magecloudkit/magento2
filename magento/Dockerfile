@@ -1,9 +1,5 @@
 FROM magecloudkit/php:7.0-fpm
 
-ENV MAGENTO_VERSION 2.2.6
-ENV INSTALL_DIR /var/www/html
-ENV COMPOSER_HOME /var/www/.composer/
-
 # install phpredis and memcached
 RUN apt-get update \
   && apt-get install -y libmemcached-dev zlib1g-dev \
@@ -20,10 +16,7 @@ COPY docker/conf/php.ini /usr/local/etc/php/
 COPY docker/conf/opcache.ini /usr/local/etc/php/conf.d/
 COPY docker/conf/php-fpm.conf /usr/local/etc/
 COPY docker/bin/* /usr/local/bin/
-RUN chmod +x /usr/local/bin/mage-run-cron \
-  && chmod +x /usr/local/bin/mage-setup \
-  && chmod +x /usr/local/bin/magento \
-  && chmod +x /usr/local/bin/start
+RUN chmod +x /usr/local/bin/start
 
 # install blackfire
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
@@ -36,21 +29,20 @@ WORKDIR /var/www/html
 ADD . /var/www/html
 
 # add custom env configuration
-COPY docker/conf/env.php /var/www/html/shop/app/etc/
+COPY docker/conf/env.php /var/www/html/app/etc/
 
 # make misc dirs
-RUN mkdir -p /var/www/html/shop/var \
-  && chmod -R 777 /var/www/html/shop/var
+RUN mkdir -p /var/www/html/var \
+  && chmod -R 777 /var/www/html/var
 
 # set perms
 RUN cd /var/www/html \
   && find . -type d -exec chmod 770 {} \; \
   && find . -type f -exec chmod 660 {} \; \
-  && chmod u+x shop/bin/magento
+  && chmod u+x bin/magento
 
 # Expose volumes
 VOLUME ["/var/www/html"]
-VOLUME ["/var/www/html/shop/pub/media"]
-VOLUME ["/var/www/html/wp-content/uploads"]
+VOLUME ["/var/www/html/pub/media"]
 
 CMD ["/usr/local/bin/start"]
