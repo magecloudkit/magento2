@@ -5,7 +5,7 @@ Magento 2 Docker Image for MageCloudKit.
 ## Building the Docker images locally
 
     $ docker build --rm=false -t magecloudkit/magento2:latest magento
-    $ docker build --rm=false -t magecloudkit/nginx:${BUILD_NUM} ./docker/nginx
+    $ docker build --rm=false -t magecloudkit/nginx:latest ./docker/nginx
 
 ## Building the Docker images on CircleCI
 
