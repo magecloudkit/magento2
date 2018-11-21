@@ -22,8 +22,8 @@ if [ "$MAGE_FAST_STARTUP" = true ] ; then
 else
     # dont flush static assets on startup as the CI service builds them
     # into the Docker image before setup:upgrade is run
-    php /var/www/html/shop/bin/magento setup:upgrade --keep-generated \
-      && php /var/www/html/shop/bin/magento cache:flush
+    php /var/www/html/bin/magento setup:upgrade --keep-generated \
+      && php /var/www/html/bin/magento cache:flush
 fi
 
 # Start the php-fpm service
