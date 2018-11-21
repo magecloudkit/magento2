@@ -20,10 +20,10 @@ In order to build the Docker images on CircleCI you must set the following envir
 
 If you wish to push the images to an Amazon ECR repository you must configure these additional variables:
 
- * `AWS_REGION`: `us-east-1`
- * `AWS_ACCESS_KEY_ID`: `xyz`
- * `AWS_SECRET_ACCESS_KEY`: `xyz`
- * `AWS_ECR_URL`: `123456789012.dkr.ecr.us-east-1.amazonaws.com/kiwico`
+ * `AWS_REGION`: e.g: `us-east-1`
+ * `AWS_ACCESS_KEY_ID`: e.g: `xyz`
+ * `AWS_SECRET_ACCESS_KEY`: e.g: `xyz`
+ * `AWS_ECR_URL`: e.g: `123456789012.dkr.ecr.us-east-1.amazonaws.com/kiwico`
 
 **Note:** Be sure to edit the CircleCI configuration file (`.circleci/config/yml`) and replace the
 `us-east-1` value with your desired AWS region.
