@@ -53,7 +53,7 @@ jobs:
       # !!! IMPORTANT !!! - Configure your AWS credentials first. Then uncomment the code below.
       # push image
       #- run: |
-      #    aws ecr get-login --no-include-email --region eu-west-1 | sh
+      #    aws ecr get-login --no-include-email --region us-east-1 | sh
       #    docker tag magecloudkit/magento2:${BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/magento2:${BUILD_NUM}
       #    docker push ${AWS_ECR_URL}/magecloudkit/magento2:${BUILD_NUM}
       #    docker tag magecloudkit/nginx:${BUILD_NUM} ${AWS_ECR_URL}/magecloudkit/nginx:${BUILD_NUM}
