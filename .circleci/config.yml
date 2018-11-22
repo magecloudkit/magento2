@@ -42,7 +42,10 @@ jobs:
           docker info
           git rev-parse HEAD > REVISION.txt
           docker info
-          docker build --rm=false -t magecloudkit/magento2:${CIRCLE_BUILD_NUM} .
+          # ECR - use the CircleCI Build ID
+          #docker build --rm=false -t magecloudkit/magento2:${CIRCLE_BUILD_NUM} .
+          # Docker Hub: always tag and push latest
+          docker build --rm=false -t magecloudkit/magento2:latest .
 
       # install aws cli tools
       - run: |
@@ -50,7 +53,15 @@ jobs:
           unzip awscli-bundle.zip
           sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
-      # !!! IMPORTANT !!! - Configure your AWS credentials first. Then uncomment the code below.
+      # In our example we'll push to our Docker Hub account so the image is available publicly.
+      # You should remove this step when configuring our own repository.
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push magecloudkit/magento2:latest
+
+      # !!! IMPORTANT !!! - Configure your AWS credentials first. Then uncomment the code below if you
+      # wish to push to an Amazon ECR repository.
+      #
       # push image
       #- run: |
       #    aws ecr get-login --no-include-email --region us-east-1 | sh
