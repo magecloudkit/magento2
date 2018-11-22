@@ -2,9 +2,17 @@
 
 Magento 2 Docker Image for MageCloudKit.
 
+This Docker image must be built locally or on a CI system with the Magento authentication keys available.
+It is not a Docker Hub automated build. For more information, please see:
+https://devdocs.magento.com/guides/v2.2install-gde/prereq/connect-auth.html.
+
 ## Building the Docker image locally
 
+    $ composer global config http-basic.repo.magento.com $MAGENTO_PUBLIC_KEY $MAGENTO_PRIVATE_KEY
+    $ composer install --ignore-platform-reqs
     $ docker build --rm=false -t magecloudkit/magento2:latest .
+    $ docker login --username=robmorgan
+    $ docker push magecloudkit/magento2:latest
 
 ## Building the Docker image on CircleCI
 
