@@ -27,4 +27,4 @@ else
 fi
 
 # Start the php-fpm service
-/usr/local/sbin/php-fpm --nodaemonize
+/usr/local/sbin/php-fpm --nodaemonize --allow-to-run-as-root
