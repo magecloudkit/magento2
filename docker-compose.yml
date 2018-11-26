@@ -29,7 +29,6 @@ services:
       CACHE_PREFIX: 1_
       PHP_OPCACHE_DISABLE: 'true'
       MAGE_FAST_STARTUP: 'true'
-      WP_CURRENT_SITE: magento.dev
       MYSQL_HOST: db
       MYSQL_DATABASE: magento2
       MYSQL_USER: magento2
