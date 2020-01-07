@@ -74,27 +74,12 @@ class ProductListTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test product list widget can process condition with multiple product sku.
-     *
-     * @magentoDbIsolation disabled
-     * @magentoDataFixture Magento/Catalog/_files/multiple_products.php
-     */
-    public function testCreateCollectionWithMultipleSkuCondition()
-    {
-        $encodedConditions = '^[`1`:^[`type`:`Magento||CatalogWidget||Model||Rule||Condition||Combine`,' .
-            '`aggregator`:`all`,`value`:`1`,`new_child`:``^],`1--1`:^[`type`:`Magento||CatalogWidget||Model||Rule|' .
-            '|Condition||Product`,`attribute`:`sku`,`operator`:`==`,`value`:`simple1, simple2`^]^]';
-        $this->block->setData('conditions_encoded', $encodedConditions);
-        $this->performAssertions(2);
-    }
-
-    /**
-     * Test product list widget can process condition with dropdown type of attribute which has Store Scope
+     * Test product list widget can process condition with dropdown type of attribute
      *
      * @magentoDbIsolation disabled
      * @magentoDataFixture Magento/Catalog/_files/products_with_dropdown_attribute.php
      */
-    public function testCreateCollectionWithDropdownAttributeStoreScope()
+    public function testCreateCollectionWithDropdownAttribute()
     {
         /** @var $attribute \Magento\Catalog\Model\ResourceModel\Eav\Attribute */
         $attribute = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
@@ -116,6 +101,9 @@ class ProductListTest extends \PHPUnit\Framework\TestCase
         $this->block->setData('conditions_encoded', $encodedConditions);
         $this->performAssertions(2);
         $attribute->setUsedInProductListing(0);
+        $attribute->save();
+        $this->performAssertions(2);
+        $attribute->setIsGlobal(1);
         $attribute->save();
         $this->performAssertions(2);
     }

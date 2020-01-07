@@ -11,8 +11,6 @@ use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Sales\Model\Order\Payment;
 use Magento\Store\Model\StoreManagerInterface;
 
-// @codingStandardsIgnoreFile
-
 require 'default_rollback.php';
 require __DIR__ . '/../../../Magento/Catalog/_files/product_simple.php';
 /** @var \Magento\Catalog\Model\Product $product */
@@ -43,7 +41,8 @@ $orderItem->setProductId($product->getId())
     ->setBasePrice($product->getPrice())
     ->setPrice($product->getPrice())
     ->setRowTotal($product->getPrice())
-    ->setProductType('simple');
+    ->setProductType('simple')
+    ->setName($product->getName());
 
 /** @var Order $order */
 $order = $objectManager->create(Order::class);

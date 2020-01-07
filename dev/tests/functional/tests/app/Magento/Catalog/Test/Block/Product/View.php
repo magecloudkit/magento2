@@ -96,7 +96,7 @@ class View extends AbstractConfigureBlock
      *
      * @var string
      */
-    protected $productDescription = '.product.attribute.description';
+    protected $productDescription = '.product.attribute.description .value';
 
     /**
      * Product short-description element.
@@ -298,6 +298,7 @@ class View extends AbstractConfigureBlock
         $checkoutData = $product->getCheckoutData();
 
         $this->getMiniCartBlock()->waitInit();
+        sleep(10);
         $this->fillOptions($product);
         if (isset($checkoutData['qty'])) {
             $this->setQty($checkoutData['qty']);

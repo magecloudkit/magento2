@@ -46,6 +46,7 @@ class UploaderTest extends \Magento\TestFramework\Indexer\TestCase
         $mediaPath = $appParams[DirectoryList::MEDIA][DirectoryList::PATH];
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $tmpDir = $this->directory->getRelativePath($mediaPath . '/import');
+        $this->directory->create($tmpDir);
         $this->uploader->setTmpDir($tmpDir);
 
         parent::setUp();
@@ -64,6 +65,27 @@ class UploaderTest extends \Magento\TestFramework\Indexer\TestCase
     }
 
     /**
+     * Check validation against temporary directory.
+     *
+     * @magentoAppIsolation enabled
+     * @return void
+     * @expectedException \Magento\Framework\Exception\LocalizedException
+     */
+    public function testMoveWithFileOutsideTemp()
+    {
+        $tmpDir = $this->uploader->getTmpDir();
+        if (!$this->directory->create($newTmpDir = $tmpDir .'/test1')) {
+            throw new \RuntimeException('Failed to create temp dir');
+        }
+        $this->uploader->setTmpDir($newTmpDir);
+        $fileName = 'magento_additional_image_one.jpg';
+        $filePath = $this->directory->getAbsolutePath($tmpDir . '/' . $fileName);
+        copy(__DIR__ . '/_files/' . $fileName, $filePath);
+        $this->uploader->move('../' .$fileName);
+        $this->assertTrue($this->directory->isExist($tmpDir . '/' . $fileName));
+    }
+
+    /**
      * @magentoAppIsolation enabled
      * @expectedException \Exception
      */
@@ -74,5 +96,17 @@ class UploaderTest extends \Magento\TestFramework\Indexer\TestCase
         copy(__DIR__ . '/_files/' . $fileName, $filePath);
         $this->uploader->move($fileName);
         $this->assertFalse($this->directory->isExist($this->uploader->getTmpDir() . '/' . $fileName));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function tearDownAfterClass()
+    {
+        $filesystem = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
+            ->get(\Magento\Framework\Filesystem::class);
+        /** @var \Magento\Framework\Filesystem\Directory\WriteInterface $directory */
+        $directory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+        $directory->delete('import');
     }
 }
